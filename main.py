@@ -1,7 +1,14 @@
+from stats import get_num_words
+import sys
+
 def main():
-    with open("books/frankenstein.txt") as f:
+    if len(sys.argv) != 2:
+        print("Usage: python3 main.py <path_to_book>")
+        sys.exit(1)
+    with open(sys.argv[1]) as f:
         file_contents = f.read()
-        #count = len(file_contents.split())
+        count = get_num_words(file_contents)
+
         lower_contents = file_contents.lower()
         count = {}
         for letter in lower_contents:
@@ -13,7 +20,8 @@ def main():
         count_list = list(map(lambda key: { "name": key, "num": count[key]}, count.keys()))
         count_list.sort(reverse=True, key=lambda dict: dict["num"])
 
+        print(f"Found {count} total words")
         for item in count_list:
-            print(f"The letter '{item["name"]}' appears {item["num"]} times.")
+            print(f"{item["name"]}: {item["num"]}")
 
 main()
